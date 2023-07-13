@@ -33,9 +33,7 @@ export const Header = () => {
       )}
       {!isLogged && (
         <Navigation>
-          <ContactButton onClick={() => navigate('signup')}>
-            Register
-          </ContactButton>
+          <ContactButton onClick={() => navigate('/')}>Register</ContactButton>
           <ContactButton onClick={() => navigate('login')}>Login</ContactButton>
           {/* {isLogged && (
           <ContactButton onClick={() => navigate('contacts')}>
