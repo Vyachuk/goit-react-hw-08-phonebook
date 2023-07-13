@@ -10,7 +10,6 @@ const setToken = token => {
 const clearToken = () => {
   authApi.defaults.headers.common.Authorization = ``;
 };
-//petromogsyla@gmail.com
 
 export const signUpThunk = createAsyncThunk(
   'auth/signUp',
@@ -44,6 +43,24 @@ export const LogOutThunk = createAsyncThunk(
     try {
       const { data } = await authApi.post('/users/logout');
       clearToken();
+      return data;
+    } catch (e) {
+      return rejectWithValue(e.message);
+    }
+  }
+);
+
+export const refreshThunk = createAsyncThunk(
+  'auth/refresh',
+  async (_, { rejectWithValue, getState }) => {
+    const token = getState().auth.token;
+    if (!token) {
+      return rejectWithValue('Token is not found!');
+    }
+
+    try {
+      setToken(token);
+      const { data } = await authApi.get('/users/current');
       return data;
     } catch (e) {
       return rejectWithValue(e.message);

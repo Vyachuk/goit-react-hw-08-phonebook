@@ -1,4 +1,9 @@
-import { LogOutThunk, signInThunk, signUpThunk } from './operations';
+import {
+  LogOutThunk,
+  refreshThunk,
+  signInThunk,
+  signUpThunk,
+} from './operations';
 
 const { createSlice, isAnyOf } = require('@reduxjs/toolkit');
 
@@ -11,6 +16,7 @@ const initialState = {
   loading: false,
   error: null,
   isLogged: false,
+  isRefresh: true,
 };
 
 const authSlice = createSlice({
@@ -24,6 +30,19 @@ const authSlice = createSlice({
         state.isLogged = false;
         state.error = null;
         state.loading = false;
+      })
+      .addCase(refreshThunk.fulfilled, (state, { payload }) => {
+        state.user = payload;
+        state.isLogged = true;
+        state.error = null;
+        state.loading = false;
+        state.isRefresh = false;
+      })
+      .addCase(refreshThunk.pending, (state, { payload }) => {
+        state.isRefresh = true;
+      })
+      .addCase(refreshThunk.rejected, state => {
+        state.isRefresh = false;
       })
       .addMatcher(
         isAnyOf(signInThunk.fulfilled, signUpThunk.fulfilled),

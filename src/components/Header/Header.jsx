@@ -2,6 +2,7 @@ import { ContactButton } from 'components/ContactList/ContactList.styled';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { LogOutThunk } from 'redux/auth/operations';
 import { selectIsLooged, selectUser } from 'redux/auth/selector';
 import { HeaderWrap, Navigation } from './Header.styled';
@@ -21,7 +22,10 @@ export const Header = () => {
           onClick={() =>
             dispatch(LogOutThunk())
               .unwrap()
-              .then(() => navigate('login'))
+              .then(() => {
+                navigate('login');
+                toast.info(`See you later!`);
+              })
           }
         >
           Log Out

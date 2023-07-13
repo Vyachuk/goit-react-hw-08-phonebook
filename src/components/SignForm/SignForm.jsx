@@ -17,9 +17,9 @@ export const SignForm = ({ elements, type }) => {
     if (type === 'Register') {
       dispatch(signUpThunk(value))
         .unwrap()
-        .then(() => {
+        .then(e => {
           navigate('/contacts');
-          toast.info(`Glad to see you!`);
+          toast.info(`Glad to see you ${e.user.name}!`);
         })
         .catch(() => {
           toast.info(`This Email is already used!`);
@@ -28,9 +28,9 @@ export const SignForm = ({ elements, type }) => {
     if (type === 'Login') {
       dispatch(signInThunk(value))
         .unwrap()
-        .then(() => {
+        .then(e => {
           navigate('/contacts');
-          toast.info(`Welcome back!`);
+          toast.info(`Welcome back ${e.user.name}!`);
         })
         .catch(() => {
           toast.info(`Please enter Email and Password!`);
