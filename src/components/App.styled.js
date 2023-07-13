@@ -5,4 +5,5 @@ export const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 20px;
+  padding-top: 0;
 `;

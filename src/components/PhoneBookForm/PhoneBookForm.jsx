@@ -10,6 +10,10 @@ export const PhoneBookForm = () => {
   const dispatch = useDispatch();
   const onSubmit = e => {
     e.preventDefault();
+    if (!name || !number) {
+      toast.info('Please enter name and number!');
+      return;
+    }
     dispatch(fetchAddContact({ name, number }))
       .unwrap()
       .then(toast.info(`${name} was added to contacts!`));

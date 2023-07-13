@@ -22,7 +22,7 @@ export const ContactList = () => {
   const filteredData = getContactsFiltered(contacts, filter);
   return (
     <ContactHumanList>
-      {filteredData.map(contact => (
+      {filteredData.reverse().map(contact => (
         <ContactItem key={contact.id}>
           {contact.name}: {contact.number}
           <ContactButton

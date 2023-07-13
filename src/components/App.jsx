@@ -1,35 +1,45 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { toast, ToastContainer } from 'react-toastify';
 import { fetchAllContacts } from 'redux/operations';
-import { selectError } from 'redux/selcetors';
 import { Wrapper } from './App.styled';
-import { ContactList } from './ContactList/ContactList';
-import { ContactSection } from './ContactSection/ContactSection';
-import { ContactsSerchField } from './ContactsSerchField/ContactsSerchField';
-import { PhoneBookForm } from './PhoneBookForm/PhoneBookForm';
 import 'react-toastify/dist/ReactToastify.css';
+import { Route, Routes } from 'react-router-dom';
+import { Layout } from './Layout/Layout';
+import { ContactApp } from './ContactApp/ContactApp';
+import { SignForm } from './SignForm/SignForm';
+import { selectIsLooged } from 'redux/auth/selector';
 
 export const App = () => {
   const dispatch = useDispatch();
-  const isError = useSelector(selectError);
-
+  const isLogged = useSelector(selectIsLooged);
   useEffect(() => {
-    dispatch(fetchAllContacts());
-  }, [dispatch]);
-  const errorData = () => {
-    toast.error(isError);
-    return <h4>'Something went wrong. Please try again!'</h4>;
-  };
+    if (isLogged) {
+      dispatch(fetchAllContacts());
+    }
+  }, [dispatch, isLogged]);
 
   return (
     <Wrapper>
-      <PhoneBookForm />
-      <ContactSection>
-        <ContactsSerchField />
-        {isError ? errorData() : <ContactList />}
-      </ContactSection>
-      <ToastContainer />
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route path="contacts" element={<ContactApp />} />
+          <Route
+            path="signup"
+            element={
+              <SignForm
+                type={'Register'}
+                elements={{ name: '', email: '', password: '' }}
+              />
+            }
+          />
+          <Route
+            path="login"
+            element={
+              <SignForm type={'Login'} elements={{ email: '', password: '' }} />
+            }
+          />
+        </Route>
+      </Routes>
     </Wrapper>
   );
 };
