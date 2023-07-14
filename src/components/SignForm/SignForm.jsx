@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { signInThunk, signUpThunk } from 'redux/auth/operations';
 import { SignFormEl } from './SignForm.styled';
@@ -9,7 +8,6 @@ import PropTypes from 'prop-types';
 export const SignForm = ({ elements, type }) => {
   const [value, setValue] = useState(elements);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -18,7 +16,6 @@ export const SignForm = ({ elements, type }) => {
       dispatch(signUpThunk(value))
         .unwrap()
         .then(e => {
-          navigate('/contacts');
           toast.info(`Glad to see you ${e.user.name}!`);
         })
         .catch(() => {
@@ -29,7 +26,6 @@ export const SignForm = ({ elements, type }) => {
       dispatch(signInThunk(value))
         .unwrap()
         .then(e => {
-          navigate('/contacts');
           toast.info(`Welcome back ${e.user.name}!`);
         })
         .catch(() => {

@@ -1,47 +1,15 @@
-import { ContactButton } from 'components/ContactList/ContactList.styled';
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { LogOutThunk } from 'redux/auth/operations';
-import { selectIsLooged, selectUser } from 'redux/auth/selector';
-import { HeaderWrap, Navigation } from './Header.styled';
+import { useSelector } from 'react-redux';
+import { selectIsLooged } from 'redux/auth/selector';
+import { AuthNav } from './AuthNav';
+import { HeaderWrap } from './Header.styled';
+import { UserMenu } from './UserMenu';
 
 export const Header = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const userName = useSelector(selectUser);
   const isLogged = useSelector(selectIsLooged);
   return (
     <HeaderWrap>
-      {isLogged && (
-        <p>{userName.charAt(0).toUpperCase() + userName.slice(1)}</p>
-      )}
-      {isLogged && (
-        <ContactButton
-          onClick={() =>
-            dispatch(LogOutThunk())
-              .unwrap()
-              .then(() => {
-                navigate('login');
-                toast.info(`See you later!`);
-              })
-          }
-        >
-          Log Out
-        </ContactButton>
-      )}
-      {!isLogged && (
-        <Navigation>
-          <ContactButton onClick={() => navigate('/')}>Register</ContactButton>
-          <ContactButton onClick={() => navigate('login')}>Login</ContactButton>
-          {/* {isLogged && (
-          <ContactButton onClick={() => navigate('contacts')}>
-            Contacts
-          </ContactButton>
-        )} */}
-        </Navigation>
-      )}
+      {isLogged && <UserMenu />}
+      {!isLogged && <AuthNav />}
     </HeaderWrap>
   );
 };

@@ -16,7 +16,9 @@ export const PhoneBookForm = () => {
     }
     dispatch(fetchAddContact({ name, number }))
       .unwrap()
-      .then(toast.info(`${name} was added to contacts!`));
+      .then(data => {
+        toast.info(`${data.name} was added to contacts!`);
+      });
     setName('');
     setNumber('');
   };
